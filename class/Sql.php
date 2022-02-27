@@ -4,21 +4,24 @@
 class Sql extends PDO{
 
 	private $conn;
+	private $tipoBanco;
 
+	public function getTipoBanco(){
+		return $this->tipoBanco;
+	}
 
 	public function __construct(){
 
-		
+			$this->tipoBanco = 1;
 		
 			$hostname = "localhost";
 			$dbname = "dbphp7";
-			$username = "root";
-			$pw = "";
+			$username = "dbphp7";
+			$pw = "170352";
 
-			$banco = 1;
-			if ($banco == 1) {
+			if ($this->tipoBanco == 1) {
 				$pdoConfig = "mysql:dbname=$dbname; host=$hostname";
-			}elseif ($banco == 2) {
+			}elseif ($this->tipoBanco == 2) {
 				$pdoConfig = "sqlsrv:Database=$dbname;server=$hostname";
 			}
 
@@ -40,6 +43,7 @@ class Sql extends PDO{
 	}
 
 	public function query($rawQuery, $params = array()){
+
 		$stmt = $this->conn->prepare($rawQuery);
 
 		$this->setParams($stmt, $params);
@@ -51,10 +55,11 @@ class Sql extends PDO{
 	}
 
 	public function select($rawQuery, $params = array()){
+
 		$stmt = $this->query($rawQuery, $params);
 
-
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 	}
 	
 }
